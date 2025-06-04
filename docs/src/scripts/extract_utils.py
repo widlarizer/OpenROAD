@@ -151,7 +151,7 @@ def extract_help(text):
 def extract_proc(text):
     proc_pattern = re.compile(
         r"""
-                sta::parse_key_args\s+
+                [sta::]?parse_key_args\s+
                 "(.*?)"\s*
                 args\s*
                 (.*?keys.*?})

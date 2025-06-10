@@ -134,7 +134,7 @@ def extract_help(text):
     # Logic now captures everything between { to earliest "proc"
     help_pattern = re.compile(
         r"""
-                sta::define_cmd_args\s+
+                [sta::]?define_cmd_args\s+
                 "(.*?)"\s*
                 (.*?)proc\s
                 """,
@@ -151,8 +151,8 @@ def extract_help(text):
 def extract_proc(text):
     proc_pattern = re.compile(
         r"""
-                [sta::]?parse_key_args\s+
-                "(.*?)"\s*
+                [sta::]?[ys_]?parse_key_args[ \t]*\n?[ \t]
+                "(\w*)"\s*
                 args\s*
                 (.*?keys.*?})
                 (.*?flags.*?})

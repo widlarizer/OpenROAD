@@ -171,6 +171,23 @@ decl_proc_name_res = {
     # r'unset_.*',
     r"set_.*_delay",
 }
+proc_exclusion_res = {
+    r"get_.*",
+}
+
+
+def is_proc_excluded(proc_name):
+    for r in proc_exclusion_res:
+        if re.match(r, proc_name):
+            return True
+    return False
+
+
+def is_doc_decl_defined(proc_name):
+    for r in decl_proc_name_res:
+        if re.match(r, proc_name):
+            return True
+    return False
 
 
 @dataclass
@@ -191,6 +208,8 @@ def get_parsers(file):
         name = signature[0]
         keys = signature[1]
         flags = signature[2]
+        if is_proc_excluded(name):
+            continue
         checker = False
         if len(signature) == 4:
             checker = "off" in signature[3]
@@ -276,17 +295,10 @@ def process_doc_decl(doc_args):
     return (keys, flags, positionals)
 
 
-def is_doc_decl_defined(proc_name):
-    for r in decl_proc_name_res:
-        if re.match(r, proc_name):
-            return True
-    return False
-
-
 def extract_doc_decls(file):
     unprocessed = []
     for name, thing in extract_utils.extract_help(file):
-        if is_doc_decl_defined(name):
+        if is_doc_decl_defined(name) and not is_proc_excluded(name):
             unprocessed.append((name, thing.strip()))
     return unprocessed
 

@@ -45,7 +45,7 @@
       stdenv =
         if stdenv.isDarwin
         then (overrideSDK stdenv "11.0")
-        else stdenv;
+        else keepDebugInfo stdenv;
     })
     .overrideAttrs (finalAttrs: previousAttrs: {
       # Based on https://github.com/google/or-tools/commit/af44f98dbeb905656b5a9fc664b5fdcffcbe1f60
@@ -73,6 +73,8 @@
       "-DVERBOSE=1"
       "-DFETCHCONTENT_SOURCE_DIR_GOOGLETEST=${fetchedGtest}"
     ];
+    cmakeBuildType = "RelWithDebInfo";
+    separateDebugInfo = true;
     
     postPatch = ''
       patchShebangs .

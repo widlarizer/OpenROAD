@@ -38,6 +38,7 @@
   stdenv,
   overrideSDK,
   git,
+  keepDebugInfo,
 }: let
   or-tools' =
     (or-tools.override {
